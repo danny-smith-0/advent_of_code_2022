@@ -4,8 +4,8 @@ project (advent_of_code_2022)
 add_subdirectory(ext/aoc_utils)
 
 add_executable ( aoc
-    source/day_01.cpp
-    # source/day_02.cpp
+    # source/day_01.cpp
+    source/day_02.cpp
     # source/day_03.cpp
     # source/day_04.cpp
     # source/day_05.cpp
