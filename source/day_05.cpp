@@ -9,8 +9,10 @@ std::vector<std::stack<char>> parse1(strings_t inputs)
     for (size_t ii = 0; ii < inputs.size(); ++ii)
     {
         if (inputs[ii] == "")
+        {
             empty_line_index = ii;
             break;
+        }
     }
 
     //Initialize the correct number of empty stacks
@@ -24,7 +26,7 @@ std::vector<std::stack<char>> parse1(strings_t inputs)
         out.push_back(std::stack<char>());
 
     // Populate the stacks
-    for (int ii = empty_line_index - 2; ii >= 0 ; --ii)
+    for (int ii = static_cast<int>(empty_line_index - 2); ii >= 0 ; --ii)
     {
         for (int jj = 0; jj < num_stacks; ++jj)
         {
@@ -54,17 +56,17 @@ ints_t_2d parse2(strings_t input)
         }
         ints_t instruction;
         size_t space_index;
-        find_space_in_string(line, &space_index);
-        line = string_after_space(line, space_index); // remove "move ". Remaining "ZZ from N to M"
-        find_space_in_string(line, &space_index);
-        int n_move = std::stoi(string_before_space(line, space_index));
-        line = string_after_space(line, space_index); // remaining: "from N to M"
-        find_space_in_string(line, &space_index);
-        line = string_after_space(line, space_index); // remaining: "N to M"
-        find_space_in_string(line, &space_index);
-        int start = std::stoi(string_before_space(line, space_index));
-        line = string_after_space(line, space_index); // remaining: "to M"
-        int end = std::stoi(string_after_space(line, space_index));
+        aoc::find_space_in_string(line, &space_index);
+        line = aoc::string_after_space(line, space_index); // remove "move ". Remaining "ZZ from N to M"
+        aoc::find_space_in_string(line, &space_index);
+        int n_move = std::stoi(aoc::string_before_space(line, space_index));
+        line = aoc::string_after_space(line, space_index); // remaining: "from N to M"
+        aoc::find_space_in_string(line, &space_index);
+        line = aoc::string_after_space(line, space_index); // remaining: "N to M"
+        aoc::find_space_in_string(line, &space_index);
+        int start = std::stoi(aoc::string_before_space(line, space_index));
+        line = aoc::string_after_space(line, space_index); // remaining: "to M"
+        int end = std::stoi(aoc::string_after_space(line, space_index));
         instruction.push_back(n_move);
         instruction.push_back(start);
         instruction.push_back(end);
@@ -130,8 +132,8 @@ int main ()
 {
     std::string day_string = "05";
     std::cout << "Day " << day_string << std::endl;
-    strings_t test_data = get_strings_from_file("../puzzle_inputs/day_" + day_string + "_test_input.txt");
-    strings_t real_data = get_strings_from_file("../puzzle_inputs/day_" + day_string + "_input.txt");
+    strings_t test_data = aoc::get_strings_from_file("../puzzle_inputs/day_" + day_string + "_test_input.txt");
+    strings_t real_data = aoc::get_strings_from_file("../puzzle_inputs/day_" + day_string + "_input.txt");
 
     std::vector<std::stack<char>> test_stacks = parse1(test_data);
     std::vector<std::stack<char>> real_stacks = parse1(real_data);
@@ -141,7 +143,7 @@ int main ()
     std::cout << "\nPart 1\n\n";
     std::string results_test_1 = part1(test_stacks, test_instructions);
     std::string expected_test_result_1 = "CMZ";
-    if (results(results_test_1, expected_test_result_1))
+    if (aoc::results(results_test_1, expected_test_result_1))
     {
         std::string results_real_1 = part1(real_stacks, real_instructions);
         std::cout << "Real result is " << results_real_1 << std::endl;
@@ -150,7 +152,7 @@ int main ()
     std::cout << "\nPart 2\n\n";
     std::string results_test_2 = part2(test_stacks, test_instructions);
     std::string expected_test_result_2 = "MCD";
-    if (results(results_test_2, expected_test_result_2))
+    if (aoc::results(results_test_2, expected_test_result_2))
     {
         std::string results_real_2 = part2(real_stacks, real_instructions);
         std::cout << "Real result is " << results_real_2 << "\n\nFinished" << std::endl;
