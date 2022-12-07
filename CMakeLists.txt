@@ -9,8 +9,8 @@ add_executable ( aoc
     # source/day_03.cpp
     # source/day_04.cpp
     # source/day_05.cpp
-    source/day_06.cpp
-	# source/day_07.cpp
+    # source/day_06.cpp
+	source/day_07.cpp
 	# source/day_08.cpp
 	# source/day_09.cpp
 	# source/day_10.cpp
