@@ -65,6 +65,7 @@ int main ()
     if (aoc::results(results_test_1, expected_test_result_1))
     {
         sll results_real_1 = part1(real_data_parsed);
+        sll answer = 485;
         std::cout << "Real result is " << results_real_1 << std::endl;
     }
 
@@ -74,6 +75,7 @@ int main ()
     if (aoc::results(results_test_2, expected_test_result_2))
     {
         sll results_real_2 = part2(real_data_parsed);
+        sll answer = 857;
         std::cout << "Real result is " << results_real_2 << "\n\nFinished" << std::endl;
     }
 

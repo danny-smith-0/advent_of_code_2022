@@ -146,7 +146,9 @@ int main ()
     if (aoc::results(results_test_1, expected_test_result_1))
     {
         std::string results_real_1 = part1(real_stacks, real_instructions);
-        std::cout << "Real result is " << results_real_1 << std::endl;
+        std::string answer = "TBVFVDZPN";
+        std::string still_gold_star = (results_real_1 == answer ? ". Gold star!" : "");
+        std::cout << "Real result is " << results_real_1 << still_gold_star << std::endl;
     }
 
     std::cout << "\nPart 2\n\n";
@@ -155,7 +157,9 @@ int main ()
     if (aoc::results(results_test_2, expected_test_result_2))
     {
         std::string results_real_2 = part2(real_stacks, real_instructions);
-        std::cout << "Real result is " << results_real_2 << "\n\nFinished" << std::endl;
+        std::string answer = "VLCWHTDSZ";
+        std::string still_gold_star = (results_real_2 == answer ? ". Gold star!" : "");
+        std::cout << "Real result is " << results_real_2 << still_gold_star << "\n\nFinished" << std::endl;
     }
 
     return 0;
