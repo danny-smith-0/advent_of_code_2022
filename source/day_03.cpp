@@ -12,13 +12,6 @@ int score_letter(char input)
     return score;
 }
 
-void unique_sorted_string(std::string& input_str)
-{
-    std::sort(input_str.begin(), input_str.end());
-    auto last = std::unique(input_str.begin(), input_str.end());
-    input_str.erase(last, input_str.end());
-}
-
 int part1(strings_t input)
 {
     int total_score = 0;
