@@ -28,7 +28,7 @@ add_executable ( aoc
 	# source/day_22.cpp
 	# source/day_23.cpp
 	# source/day_24.cpp
-	# source/day_25.cpp
+	source/day_25.cpp
 )
 
 target_link_libraries( aoc
