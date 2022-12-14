@@ -1,22 +1,32 @@
 #include <advent_of_code.h>
 
-coords_t_vec parse(strings_t input)
+std::vector<coords_t_vec> parse(strings_t input)
 {
-    coords_t_vec out;
+    std::vector<coords_t_vec> out;
     for (auto line : input)
     {
-        // for (auto my_char : line) {}
+        coords_t_vec rock_path;
+        strings_t coord_strs = aoc::substrings_to_strings(line, " ");
+        for (auto coord_str : coord_strs)
+        {
+            if (coord_str == "->")
+                continue;
+            ints_t coord_ints = aoc::substrings_to_ints(coord_str, ",");
+            coords_t coord(coord_ints[0], coord_ints[1]);
+            rock_path.push_back(coord);
+        }
+    out.push_back(rock_path);
     }
     return out;
 }
 
-sll part1(coords_t_vec input)
+sll part1(std::vector<coords_t_vec> input)
 {
     sll out = 0;
     return out;
 }
 
-sll part2(coords_t_vec input)
+sll part2(std::vector<coords_t_vec> input)
 {
     sll out = 0;
     return out;
@@ -28,8 +38,8 @@ int main ()
     std::cout << "Day " << day_string << std::endl;
     strings_t test_data = aoc::get_strings_from_file("../puzzle_inputs/day_" + day_string + "_test_input.txt");
     strings_t real_data = aoc::get_strings_from_file("../puzzle_inputs/day_" + day_string + "_input.txt");
-    coords_t_vec test_data_parsed = parse(test_data);
-    coords_t_vec real_data_parsed = parse(real_data);
+    std::vector<coords_t_vec> test_data_parsed = parse(test_data);
+    std::vector<coords_t_vec> real_data_parsed = parse(real_data);
 
     std::cout << "\nPart 1\n\n";
     sll results_test_1 = part1(test_data_parsed);
