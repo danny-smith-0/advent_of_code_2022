@@ -15,7 +15,7 @@ add_executable ( aoc
     # source/day_09.cpp
     # source/day_10.cpp
     # source/day_11.cpp
-    source/day_12.cpp
+    # source/day_12.cpp
     # source/day_13.cpp
     # source/day_14.cpp
     # source/day_15.cpp
@@ -24,7 +24,7 @@ add_executable ( aoc
     # source/day_18.cpp
     # source/day_19.cpp
     # source/day_20.cpp
-    # source/day_21.cpp
+    source/day_21.cpp
     # source/day_22.cpp
     # source/day_23.cpp
     # source/day_24.cpp
