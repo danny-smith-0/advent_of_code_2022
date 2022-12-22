@@ -1,7 +1,9 @@
 #include <advent_of_code.h>
+#include <limits>
+#include <chrono>
 
-std::string first_string;
-bool set = true;
+// Using time point and system_clock
+std::chrono::time_point<std::chrono::system_clock> start, end;
 
 enum my_operations : int
 {
@@ -11,18 +13,6 @@ enum my_operations : int
     division,
     whoops
 };
-
-char get_opr_char(int my_opr)
-{
-    switch(my_opr)
-    {
-        case my_operations::addition: return '+';
-        case my_operations::subtraction: return '-';
-        case my_operations::multiplication: return '*';
-        case my_operations::division: return '/';
-        default: return 'X';
-    }
-}
 
 struct Monkey
 {
@@ -47,18 +37,6 @@ struct Monkey
             case my_operations::division:       num = num1 / num2; break;
             default: break;
         }
-    }
-
-    std::string print()
-    {
-        std::stringstream ss;
-        ss << name << ": ";
-
-        if (num == -999)
-            ss << m1 << " " << get_opr_char(my_opr) << " " << m2;
-        else
-            ss << num;
-        return ss.str();
     }
 };
 
@@ -86,15 +64,8 @@ std::map<std::string, Monkey> parse(strings_t input)
             }
         }
         else
-        {
             monkey.num = std::stoi(parsed_line[1]);
-        }
 
-        if (set)
-        {
-            first_string = monkey.name;
-            set = false;
-        }
         monkeys.insert(std::pair<std::string, Monkey>(monkey.name, monkey));
     }
     return monkeys;
@@ -102,31 +73,88 @@ std::map<std::string, Monkey> parse(strings_t input)
 
 sll part1(std::map<std::string, Monkey> monkeys)
 {
-    sll round = 1;
     while (monkeys["root"].num == -999)
     {
-        ++round;
-        // std::cout << "Round " << round << "\n";
-        std::string pause_name = "drzm";
         for (auto& [name, monkey] : monkeys)
-        {
-            if (name == pause_name)
-                sll a = 1;
             monkey.do_math(monkeys);
-            // std::cout << monkey.print() << "\n";
-        }
-        // std::cout << "\n";
     }
-    // sll out = monkeys["root"].num;
-    sll out = monkeys[first_string].num;
-    // first_string
+    sll out = monkeys["root"].num;
     return out;
 }
 
-sll part2(std::map<std::string, Monkey> monkeys)
+sll part2(std::map<std::string, Monkey> orig_monkeys)
 {
-    sll out = 0;
-    return out;
+    double last_elapsed_seconds_print = 0;
+
+    sll min_val = 0; //LLONG_MIN;
+    sll max_val = LLONG_MAX;
+
+    std::cout << "searching from " << min_val << " to " << max_val << "\n";
+    for (sll ii = min_val; ii < max_val; ++ii)
+    {
+        // std::cout << ii << "\n";
+        std::chrono::time_point<std::chrono::system_clock> start_itr = std::chrono::system_clock::now();
+
+        if (ii == -999)
+            continue;  // It really better not be this, or it screws stuff up
+
+        std::map<std::string, Monkey> monkeys = orig_monkeys;
+        monkeys["humn"].num = ii;
+        while (monkeys["root"].num == -999)
+        {
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end - start_itr;
+            if (elapsed_seconds.count() > 4)
+            {
+                std::cout << "breaking on " << ii << ", ";
+                break;
+            }
+
+            for (auto& [name, monkey] : monkeys)
+            {
+                if (name == "root")
+                {
+                    sll num1 = monkeys[monkeys["root"].m1].num;
+                    sll num2 = monkeys[monkeys["root"].m2].num;
+                    if (num1 != -999 && num2 != -999)
+                    {
+                        if (num1 == num2)
+                        {
+                            monkeys["root"].num = ii;
+                            end = std::chrono::system_clock::now();
+                            std::chrono::duration<double> elapsed_seconds = end - start;
+                            std::cout << "\nAnswer: " << ii << "\nAnswer: " << ii << "\ntotal time at end of part2 call (test or real): " << elapsed_seconds.count() / 60 << " minutes\n\n";
+                            return ii;
+                        }
+                        else
+                        {
+                            monkeys["root"].num = 5;
+                            break;
+                        }
+                    }
+
+                }
+                else
+                    monkey.do_math(monkeys);
+            }
+        }
+
+        end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end - start;
+        if (elapsed_seconds.count() > last_elapsed_seconds_print)
+        {
+            std::stringstream ss;
+            ss << "\n" << ii << ": " << elapsed_seconds.count() / 60. << " min, ";
+            last_elapsed_seconds_print += 5 * 60;
+            std::cout << ss.str();
+        }
+    }
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+    std::cout << "\n\ntotal time at end of part2 call (test or real): " << elapsed_seconds.count() / 60 << " minutes\n\n";
+
+    std::cout << "\nWhoops! You didn't find a result!\n\n";
+    return -111;
 }
 
 int main ()
@@ -148,9 +176,10 @@ int main ()
     }
 
     std::cout << "\nPart 2\n\n";
-    sll results_test_2 = part2(test_data_parsed);
-    sll expected_test_result_2 = -1;
-    if (aoc::results(results_test_2, expected_test_result_2))
+    start = std::chrono::system_clock::now();
+    // sll results_test_2 = part2(test_data_parsed);
+    // sll expected_test_result_2 = 301;
+    // if (aoc::results(results_test_2, expected_test_result_2))
     {
         sll results_real_2 = part2(real_data_parsed);
         std::cout << "Real result is " << results_real_2 << "\n\nFinished" << std::endl;
